@@ -55,6 +55,7 @@ pet — their Pet object
 - Did your design change during implementation?
 - If yes, describe at least one change and why you made it.
 
+Yes, after asking claude about potential missing components and bottlenecks, I implemented changes that it suggested. An example was that it found that if tasks had the same name and you decided to remove the task by a title string, it would remove all of the same tasks. So instead, it added a new unique ID field for each task so that removal is more specific towards one task instead of all tasks of the same name.
 ---
 
 ## 2. Scheduling Logic and Tradeoffs
