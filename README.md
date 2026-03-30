@@ -56,7 +56,7 @@ python -m pytest tests/test_pawpal.py -v
 
 ### What the tests cover
 
-The suite contains **23 tests** across four categories:
+The suite contains 23 tests across four categories:
 
 - **Sorting correctness** — verifies tasks are returned in high → medium → low priority order, that completed tasks are excluded, and that empty pets return empty results without errors.
 - **Recurrence logic** — confirms that daily and weekly tasks generate a new pending copy after being marked complete, that "as needed" tasks do not recur, that the new task inherits all original fields, and that it receives a fresh unique ID.
