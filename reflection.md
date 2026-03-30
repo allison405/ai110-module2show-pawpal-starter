@@ -65,10 +65,13 @@ Yes, after asking claude about potential missing components and bottlenecks, I i
 - What constraints does your scheduler consider (for example: time, priority, preferences)?
 - How did you decide which constraints mattered most?
 
+It considered priority and then time, making sure the high priority tasks came first, and then ordered the tasks based on the amount of time it would take. I decided that priority would matter the most because things like giving pets their important medication or first meal of the day would matter more than any quick task in general. 
+
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
 - Why is that tradeoff reasonable for this scenario?
+One tradeoff it makes is that it creates individual schedules for the 2 pets. It doesn't combine the schedules of both pets together like a sequenced clock-based schedule. This ensures the owner has clear view of which pet needs what, rather than potentially mixing up which task is for which pet when doing things in the schedule. 
 
 ---
 

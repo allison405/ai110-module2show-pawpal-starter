@@ -10,7 +10,7 @@ def test_mark_complete_changes_status():
     pet = Pet(name="Biscuit", species="dog")
     pet.add_task(task)
 
-    pet.mark_complete(task.id)
+    pet.mark_task_complete(task.id)
 
     assert task.completed is True
 
