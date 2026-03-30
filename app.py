@@ -22,6 +22,7 @@ if st.session_state.owner is None:
     st.stop()
 
 owner: Owner = st.session_state.owner
+scheduler = Scheduler(owner=owner)
 
 # --- Add a pet ---
 st.subheader("Pets")
@@ -33,14 +34,14 @@ with col2:
 
 if st.button("Add pet"):
     if any(p.name == new_pet_name for p in owner.pets):
-        st.warning(f"A pet named {new_pet_name} already exists.")
+        st.warning(f"A pet named '{new_pet_name}' already exists.")
     else:
         owner.add_pet(Pet(name=new_pet_name, species=new_species))
         st.success(f"Added {new_pet_name} ({new_species}).")
 
 st.divider()
 
-# --- Task list per pet with checkboxes ---
+# --- Task lists ---
 st.subheader("Task Lists")
 
 if not owner.pets:
@@ -72,7 +73,9 @@ else:
             pet.add_task(task)
             st.success(f"Added '{task_title}' to {selected_pet_name}.")
 
-    # Show each pet's tasks in its own section with checkboxes
+    # Per-pet task lists with checkboxes
+    PRIORITY_BADGE = {"high": "🔴", "medium": "🟡", "low": "🟢"}
+
     for pet in owner.pets:
         st.markdown(f"### {pet.name} ({pet.species})")
         if not pet.tasks:
@@ -91,22 +94,68 @@ else:
                         task.completed = checked
                         st.rerun()
                 with col_label:
-                    label = f"~~{task.title}~~" if task.completed else task.title
+                    badge = PRIORITY_BADGE[task.priority]
+                    label = f"~~{task.title}~~" if task.completed else f"{badge} {task.title}"
                     st.markdown(label)
                 with col_meta:
-                    st.caption(f"{task.priority} · {task.duration_minutes} min · {task.frequency}")
+                    st.caption(f"{task.duration_minutes} min · {task.frequency}")
 
 st.divider()
 
-# --- Generate schedule ---
-st.subheader("Generate Schedule")
-if st.button("Generate schedule"):
-    scheduler = Scheduler(owner=owner)
-    st.text(scheduler.summarize())
+# --- Schedule & insights ---
+st.subheader("Schedule & Insights")
 
-    st.markdown("### Weekly Schedule")
-    weekly = scheduler.build_weekly_schedule()
-    for day, tasks in weekly.items():
-        if tasks:
-            with st.expander(day):
-                st.table(tasks)
+if not owner.pets:
+    st.info("Add a pet and some tasks first.")
+else:
+    # Conflict warnings — shown always, not just on button press
+    conflicts = scheduler.detect_conflicts()
+    if conflicts:
+        for w in conflicts:
+            st.warning(w)
+    else:
+        st.success("No scheduling conflicts detected.")
+
+    # Sorted task view
+    col_a, col_b = st.columns(2)
+    with col_a:
+        if st.button("Sort by priority"):
+            st.session_state["schedule_view"] = "priority"
+    with col_b:
+        if st.button("Sort by duration"):
+            st.session_state["schedule_view"] = "duration"
+
+    view = st.session_state.get("schedule_view")
+    if view == "priority":
+        rows = scheduler.get_prioritized_tasks()
+        if rows:
+            st.table([
+                {"Pet": pet_name, "Task": t.title, "Priority": t.priority, "Duration (min)": t.duration_minutes}
+                for pet_name, t in rows
+            ])
+        else:
+            st.info("No pending tasks.")
+    elif view == "duration":
+        rows = scheduler.sort_by_time()
+        if rows:
+            st.table([
+                {"Pet": pet_name, "Task": t.title, "Duration (min)": t.duration_minutes, "Priority": t.priority}
+                for pet_name, t in rows
+            ])
+        else:
+            st.info("No pending tasks.")
+
+    # Weekly schedule
+    if st.button("Generate weekly schedule"):
+        weekly = scheduler.build_weekly_schedule()
+        has_any = any(tasks for tasks in weekly.values())
+        if not has_any:
+            st.info("No tasks scheduled. Add daily or weekly tasks first.")
+        else:
+            for day, tasks in weekly.items():
+                if tasks:
+                    with st.expander(day):
+                        st.table([
+                            {"Pet": t["pet"], "Task": t["title"], "Priority": t["priority"], "Duration (min)": t["duration_minutes"]}
+                            for t in tasks
+                        ])

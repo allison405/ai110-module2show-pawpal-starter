@@ -32,6 +32,22 @@ source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+## Demo
+
+![PawPal+ app screenshot](app_screenshot.png)
+
+## Features
+
+- **Priority sorting** — tasks are ranked high → medium → low using a fixed weight map, so the most critical care always surfaces first.
+- **Sort by duration** — tasks can be reordered shortest → longest, helping owners fit care into tight time windows.
+- **Task filtering** — retrieve any subset of tasks by pet name, completion status, or both combined.
+- **Daily recurrence** — marking a daily task complete automatically appends a fresh pending copy, so the task list stays current without manual re-entry.
+- **Weekly recurrence** — same as daily recurrence, but the new copy is intended for the following week.
+- **Conflict warnings** — the scheduler compares every pair of timed tasks using interval overlap math (`start < other_end and other_start < end`) and returns a plain-text warning for each conflict instead of crashing.
+- **Weekly schedule view** — daily tasks are placed on all 7 days, weekly tasks land on Monday, and "as needed" tasks are excluded from the auto-schedule entirely.
+- **Multi-pet support** — one owner can have any number of pets, each with its own independent task list.
+- **Completion toggle** — tasks can be marked done or undone via checkbox in the UI or programmatically with `mark_task_complete(id, completed=False)`.
+
 ## Smarter Scheduling
 
 The `Scheduler` class goes beyond a basic task list with several additional features:

@@ -7,7 +7,7 @@
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
 
-My main 3 actions that users were to be able to do were create a list of pet care tasks, have the list ordered by priority, and make a weekly layout for easy visualization. The main objects, attributes, and methods needed were: 
+My main 3 actions that users were to be able to do were create a list of pet care tasks, have the list ordered by priority or length of the task's time, and make a weekly layout for easy visualization. The main objects, attributes, and methods needed were: 
 Task: 
     Attributes:
     title — name of the task (e.g., "Morning walk")
@@ -71,7 +71,7 @@ It considered priority and then time, making sure the high priority tasks came f
 
 - Describe one tradeoff your scheduler makes.
 - Why is that tradeoff reasonable for this scenario?
-One tradeoff it makes is that it creates individual schedules for the 2 pets. It doesn't combine the schedules of both pets together like a sequenced clock-based schedule. This ensures the owner has clear view of which pet needs what, rather than potentially mixing up which task is for which pet when doing things in the schedule. 
+One tradeoff could be that it creates individual checklists for each pet. It doesn't combine the lists of both pets together. If there are many pets, it may become an incredibly long list that is hard to search. However, this ensures the owner has clear view of which pet needs what, rather than potentially mixing up which task has been done for which pet when doing things in the schedule. 
 
 ---
 
@@ -82,11 +82,13 @@ One tradeoff it makes is that it creates individual schedules for the 2 pets. It
 - How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
 - What kinds of prompts or questions were most helpful?
 
+I used it as a partner throughout this project, thinking of my own ideas and taking the instructions from the project, and then inputting them into Claude. Evaluating the code that it generates each time, I would make sure that it looked reasonable before implementing. Upon adding a phase of changes, I would then test the app to see how it runs, and ask Claude to make adjustments accordingly. 
 **b. Judgment and verification**
 
 - Describe one moment where you did not accept an AI suggestion as-is.
 - How did you evaluate or verify what the AI suggested?
 
+There was one part where Claude was about to allow numerous owners in the app. However, this app is specifically meant in my plans to be designed for one user and their multiple or single pet. The change was going to take the app in a complete different direction as a larger monitor system than what I intended as a personal app, so I reclarified my prompt. I evaluated by looking at the code and the brief summary that Claude provides at the end of its code generation. 
 ---
 
 ## 4. Testing and Verification
@@ -96,11 +98,13 @@ One tradeoff it makes is that it creates individual schedules for the 2 pets. It
 - What behaviors did you test?
 - Why were these tests important?
 
+The behaviors I tested were sorting based on priority, recurring tasks, conflict overlaps, and having multiple pets. These tests are crucial to making sure the schedule would function without issues, as they are all behaviors that would fail and inconvenience the user if not behaving correctly.  
 **b. Confidence**
 
 - How confident are you that your scheduler works correctly?
 - What edge cases would you test next if you had more time?
 
+I am highly confident that the schedule works correctly, as I tested it with a couple tasks, and used filters to generate the schedules. I also tested have numerous pets to view how the schedule would look. An edge case I would test next time seeing if a task that is the same name as another task can be removed without influencing or causing all of the tasts of the same name to be removed.
 ---
 
 ## 5. Reflection
@@ -109,10 +113,16 @@ One tradeoff it makes is that it creates individual schedules for the 2 pets. It
 
 - What part of this project are you most satisfied with?
 
+I am most satisfied with the generate schedule function, which was able to create a schedule based on the filter selected. It was able to form schedules that were arranged based on priority or duration which was something I was aiming highly to do. 
+
 **b. What you would improve**
 
 - If you had another iteration, what would you improve or redesign?
 
+I would want to make the weekly task a constantly-open standard 7 day calendar view instead of 7 individual drop downs, as it can get in the way when users are trying to quickly view and then get to taking care of their pets. 
+
 **c. Key takeaway**
 
 - What is one important thing you learned about designing systems or working with AI on this project?
+
+Something I learned/solidified is that AI is able to act as a partner, assisting you in creating projects. However, checking its work must always be done, as it may generate unwanted details/ideas. Thoroughly checking, working on prompt engineering, and brainstorming small details here and there will allow you to use AI to perform high capabilities.
